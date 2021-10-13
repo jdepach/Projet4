@@ -1,4 +1,4 @@
-
+from tinydb import TinyDB
 
 # class tournament
     # tounament_name
@@ -26,16 +26,16 @@ class player:
         self.ranking = ranking
         self.id = id(self) # code de chaque joueur
 
-    def set_name(self, input_name):
-        name = input_name
-    def set_family_name(input_family_name):
-        family_name = input_family_name
-    def set_birthday(input_birthday):
-        birthday = input_birthday
-    def set_gender(input_gender):
-        gender = input_gender
-    def set_ranking(input_ranking):
-        ranking = input_ranking
+    # def set_name(self, input_name):
+    #     name = input_name
+    # def set_family_name(input_family_name):
+    #     family_name = input_family_name
+    # def set_birthday(input_birthday):
+    #     birthday = input_birthday
+    # def set_gender(input_gender):
+    #     gender = input_gender
+    # def set_ranking(input_ranking):
+    #     ranking = input_ranking
 
 
 # round = [match1, match2; match3, match4]
