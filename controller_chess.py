@@ -138,11 +138,6 @@ def set_tournament():
         round1.append(match3)
         round1.append(match4)
 
-        match1_1 = match1
-        match1_2 = match2
-        match1_3 = match3
-        match1_4 = match4
-
         print(f"match 1 : {final_rank[0][0].name} {final_rank[0][0].family_name}/"
               f" {final_rank[1][0].name} {final_rank[1][0].family_name}")
         print(f"match 2 : {final_rank[2][0].name} {final_rank[2][0].family_name}/"
@@ -152,9 +147,20 @@ def set_tournament():
         print(f"match 4 : {final_rank[6][0].name} {final_rank[6][0].family_name}/"
               f" {final_rank[7][0].name} {final_rank[7][0].family_name}")
 
+        # dictionnaire de rencontre des joueurs entre eux
+        versus = {}
+        for i in range(len(joueurs)):
+            if (i % 2) == 0:
+                versus[final_rank[i][0].get_id()] = []
+                versus[final_rank[i][0].get_id()].append(final_rank[i + 1][0].get_id())
+            else:
+                versus[final_rank[i][0].get_id()] = []
+                versus[final_rank[i][0].get_id()].append(final_rank[i - 1][0].get_id())
+
         print("veuillez entrer les scores")
 
         # #version auto
+        print("[AUTO]")
         #joueur1
         score_tmp = 0
         match1[0].append(score_tmp)
@@ -210,28 +216,31 @@ def set_tournament():
         #round2
         new_rank(round1)
 
+        id = []
+        for i in range(len(joueurs)):
+            id.append(new_rank(round1)[i][0].get_id())
+
+        print("\nclassement à l'issue du premier tour : ")
+        for i in range(len(joueurs)):
+            print(f"{i + 1}  {new_rank(round1)[i][0].name} {new_rank(round1)[i][0].family_name}")
+
         round2 = []
+        for item in versus.items():
+            if id[1] in item is False:
+                match_tmp = ([id[0]], [id[1]])
+                versus[id[0]].append(id[1])
+                round2.append(match_tmp)
+            elif id[2] in item is True:
+                match_tmp = ([id[0]], [id[2]])
+                versus[id[0]].append(id[2])
+                round2.append(match_tmp)
 
-        match2_1 = ([new_rank(round1)[0][0]], [new_rank(round1)[1][0]])
-        match2_2 = ([new_rank(round1)[2][0]], [new_rank(round1)[3][0]])
-        match2_3 = ([new_rank(round1)[4][0]], [new_rank(round1)[5][0]])
-        match2_4 = ([new_rank(round1)[6][0]], [new_rank(round1)[7][0]])
+        print(versus)
+        print(round2)
 
-        if match2_1 != match1_1:
-            print('OK')
-            pass
-        else:
-            match2_1 = ([new_rank(round1)[0][0]], [new_rank(round1)[3][0]])
-            match2_2 = ([new_rank(round1)[1][0]], [new_rank(round1)[2][0]])
-            match2_3 = ([new_rank(round1)[4][0]], [new_rank(round1)[5][0]])
-            match2_4 = ([new_rank(round1)[6][0]], [new_rank(round1)[7][0]])
-            if match2_1 != match1_1:
-                pass
-            else:
-                match2_1 = ([new_rank(round1)[0][0]], [new_rank(round1)[4][0]])
-                match2_2 = ([new_rank(round1)[3][0]], [new_rank(round1)[2][0]])
-                match2_3 = ([new_rank(round1)[4][0]], [new_rank(round1)[5][0]])
-                match2_4 = ([new_rank(round1)[6][0]], [new_rank(round1)[7][0]])
+
+
+
 
 
 
