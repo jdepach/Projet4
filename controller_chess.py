@@ -1,5 +1,5 @@
 import model_chess as mc
-import numpy as np
+import time
 
 # swiss system for 8 players :
     # round1
@@ -76,7 +76,7 @@ def set_tournament():
     """lancement d'un nouveau tournois"""
     joueurs = []
     rounds = []
-    print("\ntournois d'echecs en quatre rounds. Veuillez renseignez les informations\n")
+    print("\ntournois d'echecs en quatre rounds. Veuillez renseigner les informations\n")
 
     #version auto remplie du tournois
     tournament = mc.Tournament(
@@ -147,44 +147,139 @@ def set_tournament():
         print(f"match 4 : {final_rank[6][0].name} {final_rank[6][0].family_name}/"
               f" {final_rank[7][0].name} {final_rank[7][0].family_name}")
 
+        round1.append(f"Début du round : {time.ctime()}")
+
         # dictionnaire de rencontre des joueurs entre eux
         versus = {}
         for i in range(len(joueurs)):
             if (i % 2) == 0:
-                versus[final_rank[i][0].get_id()] = []
-                versus[final_rank[i][0].get_id()].append(final_rank[i + 1][0].get_id())
+                versus[final_rank[i][0]] = []
+                versus[final_rank[i][0]].append(final_rank[i + 1][0])
             else:
-                versus[final_rank[i][0].get_id()] = []
-                versus[final_rank[i][0].get_id()].append(final_rank[i - 1][0].get_id())
+                versus[final_rank[i][0]] = []
+                versus[final_rank[i][0]].append(final_rank[i - 1][0])
 
         print("veuillez entrer les scores")
 
         # #version auto
         print("[AUTO]")
         #joueur1
-        score_tmp = 0
-        match1[0].append(score_tmp)
+        round1[0][0].append(0)
         #joueur2
-        score_tmp = 3
-        match1[1].append(score_tmp)
+        round1[0][1].append(1)
         # joueur3
-        score_tmp = 0
-        match2[0].append(score_tmp)
+        round1[1][0].append(0)
         # joueur4
-        score_tmp = 1
-        match2[1].append(score_tmp)
+        round1[1][1].append(1)
         # joueur5
-        score_tmp = 0
-        match3[0].append(score_tmp)
+        round1[2][0].append(0)
         # joueur6
-        score_tmp = 1
-        match3[1].append(score_tmp)
+        round1[2][1].append(1)
         # joueur7
-        score_tmp = 0
-        match4[0].append(score_tmp)
+        round1[3][0].append(0)
         # joueur8
-        score_tmp = 1
-        match4[1].append(score_tmp)
+        round1[3][1].append(1)
+
+        # #version manuelle
+
+        round1.append(f"Fin du round : {time.ctime()}")
+        print(round1)
+            # #joueur1
+            # score_tmp = int(input(f"{final_rank[0][0].name} {final_rank[0][0].family_name} : "))
+            # match1[0].append(score_tmp)
+            # #joueur2
+            # score_tmp = int(input(f"{final_rank[1][0].name} {final_rank[1][0].family_name} : "))
+            # match1[1].append(score_tmp)
+            # # joueur3
+            # score_tmp = int(input(f"{final_rank[2][0].name} {final_rank[2][0].family_name} : "))
+            # match2[0].append(score_tmp)
+            # # joueur4
+            # score_tmp = int(input(f"{final_rank[3][0].name} {final_rank[3][0].family_name} : "))
+            # match2[1].append(score_tmp)
+            # # joueur5
+            # score_tmp = int(input(f"{final_rank[4][0].name} {final_rank[4][0].family_name} : "))
+            # match3[0].append(score_tmp)
+            # # joueur6
+            # score_tmp = int(input(f"{final_rank[5][0].name} {final_rank[5][0].family_name} : "))
+            # match3[1].append(score_tmp)
+            # # joueur7
+            # score_tmp = int(input(f"{final_rank[6][0].name} {final_rank[6][0].family_name} : "))
+            # match4[0].append(score_tmp)
+            # # joueur8
+            # score_tmp = int(input(f"{final_rank[7][0].name} {final_rank[7][0].family_name} : "))
+            # match4[1].append(score_tmp)
+        print(round1)
+        rounds.append(round1)
+
+        ######round2#######
+        new_rank(round1)
+
+        id = []
+        for i in range(len(joueurs)):
+            id.append(new_rank(round1)[i][0])
+
+        print(id)
+
+        print("\nclassement à l'issue du premier tour : ")
+        for i in range(len(joueurs)):
+            print(f"{i + 1}  {new_rank(round1)[i][0].name} {new_rank(round1)[i][0].family_name}")
+
+        round2 = []
+
+        i = 0
+        for item in id:
+            if i + 1 < 8 and id[i + 1] not in versus[id[i]] and id[i] not in versus[id[i + 1]]:
+                match_tmp = ([id[i]], [id[i + 1]])
+                versus[id[i]].append(id[i + 1])
+                versus[id[i + 1]].append(id[i])
+                id.append(id.pop(id.index(id[i + 1])))
+                round2.append(match_tmp)
+                i += 1
+
+            elif i + 2 < 8 and id[i + 2] not in versus[id[i]] and id[i] not in versus[id[i + 2]]:
+                match_tmp = ([id[i]], [id[i + 2]])
+                versus[id[i]].append(id[i + 2])
+                versus[id[i + 2]].append(id[i])
+                id.append(id.pop(id.index(id[i + 2])))
+                round2.append(match_tmp)
+                i += 1
+
+            elif id[i - 1] not in versus[id[i]] and id[i] not in versus[id[i - 1]]:
+                match_tmp = ([id[i]], [id[i - 1]])
+                versus[id[i]].append(id[i - 1])
+                versus[id[i - 1]].append(id[i])
+                id.append(id.pop(id.index(id[i - 1])))
+                round2.append(match_tmp)
+                i += 1
+            if i > 3:
+                break
+
+        round2.append(f"Début du round : {time.ctime()}")
+
+        print("veuillez entrer les scores")
+
+        # #version auto
+        print("[AUTO]")
+        # joueur1
+        round2[0][0].append(0)
+        # joueur2
+        round2[0][1].append(1)
+        # joueur3
+        round2[1][0].append(0)
+        # joueur4
+        round2[1][1].append(1)
+        # joueur5
+        round2[2][0].append(0)
+        # joueur6
+        round2[2][1].append(1)
+        # joueur7
+        round2[3][0].append(0)
+        # joueur8
+        round2[3][1].append(1)
+
+        print(round1)
+        print("###################")
+        print(round2)
 
         # #version manuelle
         # #joueur1
@@ -212,34 +307,14 @@ def set_tournament():
         # score_tmp = int(input(f"{final_rank[7][0].name} {final_rank[7][0].family_name} : "))
         # match4[1].append(score_tmp)
 
-        rounds.append(round1)
-        #round2
-        new_rank(round1)
-
-        id = []
-        for i in range(len(joueurs)):
-            id.append(new_rank(round1)[i][0].get_id())
-
-        print("\nclassement à l'issue du premier tour : ")
-        for i in range(len(joueurs)):
-            print(f"{i + 1}  {new_rank(round1)[i][0].name} {new_rank(round1)[i][0].family_name}")
-
-        round2 = []
-        for item in versus.items():
-            if id[1] in item is False:
-                match_tmp = ([id[0]], [id[1]])
-                versus[id[0]].append(id[1])
-                round2.append(match_tmp)
-            elif id[2] in item is True:
-                match_tmp = ([id[0]], [id[2]])
-                versus[id[0]].append(id[2])
-                round2.append(match_tmp)
-
-        print(versus)
-        print(round2)
+        round2.append(f"Fin du round : {time.ctime()}")
+        rounds.append(round2)
 
 
+        ####### round3 ########
+        new_rank(round2)
 
+        
 
 
 
